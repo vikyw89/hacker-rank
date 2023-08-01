@@ -1,28 +1,20 @@
-// https://leetcode.com/problems/removing-stars-from-a-string/submissions/?envType=study-plan-v2&envId=leetcode-75
+// https://leetcode.com/problems/removing-stars-from-a-string/solutions/
 
 /**
  * @param {string} s
  * @return {string}
  */
 var removeStars = function (s) {
-    // store the result in a new array to make it efficient
+    // store the result in a stack
+    let stack = []
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i]
 
-    let newArr = []
-    // loop from right to left to make it efficient
-    let deleteCount = 0
-    for (let right = s.length - 1; right >= 0; right--) {
-        const char = s[right]
-
-        if (char === "*") {
-            deleteCount++
-        }
-        else if (deleteCount === 0) {
-            newArr.push(char)
-        }
-        else if (deleteCount > 0) {
-            deleteCount--
+        if (char !== "*") {
+            stack.push(char)
+        } else {
+            stack.pop()
         }
     }
-    const result = newArr.reverse().join("")
-    return result
+    return stack.join("")
 };
