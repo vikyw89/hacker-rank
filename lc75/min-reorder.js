@@ -1,58 +1,75 @@
+// https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/submissions/?envType=study-plan-v2&envId=leetcode-75
+
 /**
  * @param {number} n
  * @param {number[][]} connections
  * @return {number}
  */
-var minReorder = function (n, connections) {
-    // initial setup
-    // generate cities if there's none yet
-    class City {
-        constructor(name, connections) {
-            this.name = name,
-                this.connections = connections ?? []
-        }
-    }
-
-    // generate empty city
-    let cities = new Array(n)
-
+const minReorder = function (n, connections) {
+    // generate nodes
+    let nodes = {}
     for (let i = 0; i < n; i++) {
-        cities[i] = new City(i)
+        nodes[i] = new Node(i)
     }
 
-    // generate connections of each city
+    // generate connections
     for (let i = 0; i < connections.length; i++) {
-        const [city, connectedTo] = connections[i]
-        cities[city].connections.push(cities[connectedTo])
+        const [name, out] = connections[i]
+        nodes[name].out.push(nodes[out])
+        nodes[out].into.push(nodes[name])
     }
 
-    // BFS
-    let edgeReverseCount = 0
-    let visited = {}
-    let next = []
-    next.push(cities[0])
+    let totalReverseCount = 0
+    let visited = new Map()
 
-    while (next.length > 0) {
-        const city = next.shift()
+    // bfs from the root
+    totalReverseCount += bfs(nodes[0], new Node(-1), visited)
 
-        if (city.name in visited) continue
-        visited[city.name] = true
+    return totalReverseCount
+};
 
-        // add next destination
-        const fromCity = city.connections
-        let toCity = []
-        for (let i = 0; i < cities.length; i++) {
-            let temp = cities[i].connections.some(c => c.name in visited)
-            if (temp) {
-                toCity.push(cities[i])
+function bfs(root, find, visited) {
+    let queue = [root]
+    let reverseCount = 0
+
+    while (queue.length > 0) {
+        const node = queue.shift()
+
+        if (visited.has(node)) continue
+        visited.set(node)
+
+        if (node.name === find.name) {
+            break
+        }
+
+        let next = []
+        for (let i = 0; i < node.out.length; i++) {
+            if (!visited.has(node.out[i])) {
+                next.push(node.out[i])
+                reverseCount++
             }
         }
-        edgeReverseCount += fromCity.filter(c => !(c.name in visited)).length
-        next.push(...fromCity, ...toCity)
+
+        for (let i = 0; i < node.into.length; i++) {
+            if (!visited.has(node.into[i])) {
+                next.push(node.into[i])
+            }
+        }
+
+        queue.push(...next)
     }
 
-    return edgeReverseCount
-};
+    return reverseCount
+}
+
+class Node {
+    constructor(name, out, into) {
+        this.name = name,
+            this.out = out ?? [],
+            this.into = into ?? []
+    }
+}
+
 
 const result = minReorder(6, [[0, 1], [1, 3], [2, 3], [4, 0], [4, 5]])
 console.log(result)
