@@ -6,6 +6,7 @@
   "description": "<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 --> <a name=\"readme-top\"></a> <!-- *** Thanks for checking out the Best-README-Template. If you have a suggestion *** that would make this better, please fork the repo and create a pull request *** or simply open an issue with the tag \"enhancement\". *** Don't forget to give the project a star! *** Thanks again! Now go create something AMAZING! :D -->",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "ansi-escapes": "^4.3.2",
     "ansi-regex": "^5.0.1",
@@ -120,6 +121,7 @@
     "leven": "^3.1.0",
     "lines-and-columns": "^1.2.4",
     "locate-path": "^5.0.0",
+    "lodash": "^4.17.21",
     "lru-cache": "^5.1.1",
     "make-dir": "^4.0.0",
     "makeerror": "^1.0.12",
