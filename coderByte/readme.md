@@ -1,4 +1,12 @@
-to start
+# requirements :
+
+- node 18
+- npm
+
+# to start
+
+from root directory
+
 ```js
-npx nodemon sortAndManipulate.js
+npx nodemon ./coderByte/sortAndManipulate.js
 ```
